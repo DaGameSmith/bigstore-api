@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Product } from '@prisma/client';
+import { Cart } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
 import { CreateCartInput } from './dto/create-cart.input';
 import { UpdateCartInput } from './dto/update-cart.input';
@@ -9,17 +9,17 @@ export class CartService {
   constructor(private prisma: PrismaService) {}
 
   create(createCartInput: CreateCartInput) {
-    return this.prisma.product.create({
+    return this.prisma.cart.create({
       data: createCartInput
     });
   }
 
   findAll() {
-    return this.prisma.product.findMany();
+    return this.prisma.cart.findMany();
   }
 
   findOne(id: number) {
-    return this.prisma.product.findUnique({
+    return this.prisma.cart.findUnique({
       where: {
         id
       }
@@ -27,7 +27,7 @@ export class CartService {
   }
 
   update(updateCartInput: UpdateCartInput) {
-    return this.prisma.user.update({
+    return this.prisma.cart.update({
       where: {
         id: updateCartInput.id
       },

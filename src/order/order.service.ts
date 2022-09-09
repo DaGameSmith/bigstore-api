@@ -9,17 +9,17 @@ export class OrderService {
   constructor(private prisma: PrismaService) {}
 
   create(createOrderInput: CreateOrderInput) {
-    return this.prisma.product.create({
+    return this.prisma.order.create({
       data: createOrderInput
     });
   }
 
   findAll() {
-    return this.prisma.product.findMany();
+    return this.prisma.order.findMany();
   }
 
   findOne(id: number) {
-    return this.prisma.product.findUnique({
+    return this.prisma.order.findUnique({
       where: {
         id
       }
@@ -27,7 +27,7 @@ export class OrderService {
   }
 
   update(updateOrderInput: UpdateOrderInput) {
-    return this.prisma.user.update({
+    return this.prisma.order.update({
       where: {
         id: updateOrderInput.id
       },

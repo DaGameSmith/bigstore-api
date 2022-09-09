@@ -5,4 +5,8 @@ import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 export class UpdateCartInput extends PartialType(CreateCartInput) {
   @Field(() => Int)
   id: number;
+
+  @Field(() => Int)
+  userId: number;
+  
 }
