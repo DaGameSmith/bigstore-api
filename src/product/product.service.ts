@@ -8,17 +8,38 @@ import { UpdateProductInput } from './dto/update-product.input';
 export class ProductService {
   constructor(private prisma: PrismaService) {}
 
-  create(createProductInput: CreateProductInput) {
+  create(createProductInput: CreateProductInput): Promise<Product> {
     return this.prisma.product.create({
-      data: createProductInput
+      data: {
+        name: createProductInput.name,
+        price: createProductInput.price,
+        user: {
+          connect: {
+            id: createProductInput.userId,
+          }
+        },
+        category: {
+          connect: {
+            id: createProductInput.categoryId,
+          }
+        }
+      }
     });
   }
 
-  findAll() {
+  findAll(): Promise<Product[]> {
     return this.prisma.product.findMany();
   }
 
-  findOne(id: number) {
+  findAllWhere(id: number): Promise<Product[] | null> {
+    return this.prisma.product.findMany({
+      where: {
+        userId: id
+      }
+    });
+  }
+
+  findOne(id: number): Promise<Product | null> {
     return this.prisma.product.findUnique({
       where: {
         id
@@ -26,8 +47,8 @@ export class ProductService {
     });
   }
 
-  update(updateProductInput: UpdateProductInput) {
-    return this.prisma.user.update({
+  update(updateProductInput: UpdateProductInput): Promise<Product> {
+    return this.prisma.product.update({
       where: {
         id: updateProductInput.id
       },
@@ -36,6 +57,6 @@ export class ProductService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} product`;
+    return this.prisma.product.delete({ where: { id } });
   }
 }

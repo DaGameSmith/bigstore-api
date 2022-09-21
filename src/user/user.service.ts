@@ -16,7 +16,21 @@ export class UserService {
   }
 
   findAll(): Promise<User[]> {
-    return this.prisma.user.findMany();
+    return this.prisma.user.findMany({
+      // include: {
+      //   products: true,
+      //   orders: true,
+      // }
+    });
+  }
+
+  findAllWithProducts(): Promise<User[]> {
+    return this.prisma.user.findMany({
+      include: {
+        products: true,
+        orders: true,
+      }
+    });
   }
 
   findOne(id: number): Promise<User | null> {
