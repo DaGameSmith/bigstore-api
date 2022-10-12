@@ -14,9 +14,9 @@ export class CartService {
     });
   }
 
-  findAll() {
-    return this.prisma.cart.findMany();
-  }
+  // findAll() {
+  //   return this.prisma.cart.findMany();
+  // }
 
   findOne(id: number) {
     return this.prisma.cart.findUnique({

@@ -35,7 +35,7 @@ export class UserResolver {
   @ResolveField()
   async products(@Parent() user: User) {
     const { id } = user;
-    return this.productService.findAllWhere(id);
+    return this.productService.findAllMyProducts(id);
   }
 
   @Mutation(() => User)

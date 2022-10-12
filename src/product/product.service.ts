@@ -27,11 +27,12 @@ export class ProductService {
     });
   }
 
-  findAll(): Promise<Product[]> {
+  findAllProducts(): Promise<Product[]> {
     return this.prisma.product.findMany();
   }
 
-  findAllWhere(id: number): Promise<Product[] | null> {
+
+  findAllMyProducts(id: number): Promise<Product[] | null> {
     return this.prisma.product.findMany({
       where: {
         userId: id
@@ -39,12 +40,28 @@ export class ProductService {
     });
   }
 
-  findOne(id: number): Promise<Product | null> {
-    return this.prisma.product.findUnique({
+  async findByName(name: string): Promise<Product[] | null> {
+    return this.prisma.product.findMany({
       where: {
-        id
+        name: {
+          contains: name,
+          mode: "insensitive",
+        }
       }
     });
+  }
+
+  async findByCategory(name: string): Promise<Product[] | null> {
+    return this.prisma.product.findMany({
+      where: {
+        category: {
+          name: {
+            contains: name,
+            mode: "insensitive",
+          }
+        }
+        }
+      });
   }
 
   update(updateProductInput: UpdateProductInput): Promise<Product> {

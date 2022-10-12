@@ -9,14 +9,14 @@ export class CartResolver {
   constructor(private readonly cartService: CartService) {}
 
   @Mutation(() => Cart)
-  createCart(@Args('createCartInput') createCartInput: CreateCartInput) {
-    return this.cartService.create(createCartInput);
-  }
+  // createCart(@Args('createCartInput') createCartInput: CreateCartInput) {
+  //   return this.cartService.create(createCartInput);
+  // }
 
-  @Query(() => [Cart], { name: 'cart' })
-  findAll() {
-    return this.cartService.findAll();
-  }
+  // @Query(() => [Cart], { name: 'carts' })
+  // findAll() {
+  //   return this.cartService.findAll();
+  // }
 
   @Query(() => Cart, { name: 'cart' })
   findOne(@Args('id', { type: () => Int }) id: number) {
@@ -29,7 +29,7 @@ export class CartResolver {
   }
 
   @Mutation(() => Cart)
-  removeCart(@Args('id', { type: () => Int }) id: number) {
+  removeFromCart(@Args('id', { type: () => Int }) id: number) {
     return this.cartService.remove(id);
   }
 }

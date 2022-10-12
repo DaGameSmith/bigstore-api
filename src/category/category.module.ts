@@ -4,6 +4,7 @@ import { CategoryResolver } from './category.resolver';
 import { PrismaService } from '../prisma.service';
 
 @Module({
-  providers: [CategoryResolver, CategoryService, PrismaService]
+  providers: [CategoryResolver, CategoryService, PrismaService],
+  exports: [CategoryService],
 })
 export class CategoryModule {}

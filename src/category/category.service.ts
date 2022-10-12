@@ -26,6 +26,16 @@ export class CategoryService {
     });
   }
 
+  findProductCategory(id: number) {
+    return this.prisma.category.findFirst({
+      where: {
+        products: {
+          
+        }
+      }
+    });
+  }
+
   update(updateCategoryInput: UpdateCategoryInput) {
     return this.prisma.category.update({
       where: {
