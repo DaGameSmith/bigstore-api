@@ -41,6 +41,16 @@ export class UserService {
     });
   }
 
+  findOneWithCart(id: number): Promise<User | null> {
+    return this.prisma.user.findFirst({
+      where: {
+        cart: {
+          id
+        }
+      }
+    });
+  }
+
   update(updateUserInput: UpdateUserInput): Promise<User> {
     return this.prisma.user.update({
       where: {

@@ -2,6 +2,7 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { User } from '../../user/entities/user.entity';
 import { Product } from '../../product/entities/product.entity';
 
+
 @ObjectType()
 export class Cart {
   @Field(type => Int)
@@ -12,4 +13,8 @@ export class Cart {
 
   @Field(type => [Product])
   products: Product[];
+
+  // @Field(type => Cart)
+  // products: Cart;
+  
 }

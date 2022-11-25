@@ -4,17 +4,22 @@ import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { ProductService } from '../product/product.service';
+import { CartService } from '../cart/cart.service';
 
 @Resolver(of => User)
 export class UserResolver {
   constructor(
     private readonly userService: UserService,
     private readonly productService: ProductService,
+    private readonly cartService: CartService,
   ) {}
 
   @Mutation(() => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.userService.create(createUserInput);
+  async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+    // return this.userService.create(createUserInput);
+    const result = await this.userService.create(createUserInput);
+    await this.cartService.create(result.id);
+    return result;
   }
 
   @Query(() => [User], { name: 'users' })
@@ -38,11 +43,18 @@ export class UserResolver {
     return this.productService.findAllMyProducts(id);
   }
 
+  @ResolveField()
+  async cart(@Parent() user: User) {
+    const { id } = user;
+    return this.cartService.findOne(id);
+  }
+
   @Mutation(() => User)
   updateUserAddress(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.userService.update(updateUserInput);
   }
 
+  
   // @Mutation(() => User)
   // removeUser(@Args('id', { type: () => Int }) id: number) {
   //   return this.userService.remove(id);

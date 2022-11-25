@@ -3,9 +3,10 @@ import { UserService } from './user.service';
 import { UserResolver } from './user.resolver';
 import { ProductModule } from '../product/product.module';
 import { PrismaService } from '../prisma.service';
+import { CartModule } from '../cart/cart.module';
 
 @Module({
-  imports: [ProductModule],
+  imports: [ProductModule, CartModule],
   providers: [UserResolver, UserService, PrismaService],
   exports: [UserService],
 })

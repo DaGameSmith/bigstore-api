@@ -51,6 +51,26 @@ export class ProductService {
     });
   }
 
+  async findByCartId(id: number): Promise<Product[] | null> {
+    return this.prisma.product.findMany({
+      where: {
+        carts: {
+          some: {
+            userId: id,
+          },
+        },
+      }
+    });
+  }
+
+  async findById(id: number): Promise<Product> {
+    return this.prisma.product.findUnique({
+      where: {
+        id
+      }
+    });
+  }
+
   async findByCategory(name: string): Promise<Product[] | null> {
     return this.prisma.product.findMany({
       where: {

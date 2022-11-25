@@ -46,7 +46,11 @@ export class ProductResolver {
   @ResolveField()
   async category(@Parent() product: Product) {
     const { id } = product;
-    return this.categoryService.findProductCategory(id);
+    const cat = await this.productService.findById(id);
+    const result = await this.categoryService.findProductCategory(cat.categoryId);
+    // return this.categoryService.findProductCategory(id);
+    return result;
   }
+
 
 }

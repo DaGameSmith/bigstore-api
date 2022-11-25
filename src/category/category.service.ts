@@ -27,11 +27,9 @@ export class CategoryService {
   }
 
   findProductCategory(id: number) {
-    return this.prisma.category.findFirst({
+    return this.prisma.category.findUnique({
       where: {
-        products: {
-          
-        }
+        id
       }
     });
   }

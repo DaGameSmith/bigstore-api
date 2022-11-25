@@ -14,23 +14,25 @@ type Product {
   category: Category!
 }
 
+type Cart {
+  id: Int!
+  user: User!
+  products: [Product!]!
+}
+
 type User {
   id: Int!
   name: String!
   email: String!
   address: String!
   products: [Product!]!
+  cart: Cart!
 }
 
 type Order {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-type Cart {
   id: Int!
   user: User!
-  products: [Product!]!
+  product: Product!
 }
 
 type Query {
@@ -41,8 +43,9 @@ type Query {
   searchProductsByName(name: String!): [Product!]!
   searchProductsByCategory(category: String!): [Product!]!
   category(id: Int!): Category!
-  order(id: Int!): Order!
-  cart(id: Int!): Cart!
+  findCartWithUserId(id: Int!): Cart!
+  findAllOrders: [Order!]!
+  findUserOrders(id: Int!): [Order!]!
 }
 
 type Mutation {
@@ -54,12 +57,9 @@ type Mutation {
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
   removeCategory(id: Int!): Category!
-  createOrder(createOrderInput: CreateOrderInput!): Order!
-  updateOrder(updateOrderInput: UpdateOrderInput!): Order!
-  removeOrder(id: Int!): Order!
-  findOne(id: Int!): Cart!
   updateCart(updateCartInput: UpdateCartInput!): Cart!
   removeFromCart(id: Int!): Cart!
+  createOrder(createOrderInput: CreateOrderInput!): Order!
 }
 
 input CreateUserInput {
@@ -97,18 +97,12 @@ input UpdateCategoryInput {
   id: Int!
 }
 
+input UpdateCartInput {
+  userId: Int!
+  productId: Int!
+}
+
 input CreateOrderInput {
   userId: Int!
   productId: Int!
-}
-
-input UpdateOrderInput {
-  userId: Int!
-  productId: Int!
-  id: Int!
-}
-
-input UpdateCartInput {
-  userId: Int!
-  id: Int!
 }

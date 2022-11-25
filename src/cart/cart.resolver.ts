@@ -1,14 +1,20 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent} from '@nestjs/graphql';
 import { CartService } from './cart.service';
 import { Cart } from './entities/cart.entity';
 import { CreateCartInput } from './dto/create-cart.input';
 import { UpdateCartInput } from './dto/update-cart.input';
+import { UserService } from '../user/user.service';
+import { ProductService } from '../product/product.service';
 
 @Resolver(() => Cart)
 export class CartResolver {
-  constructor(private readonly cartService: CartService) {}
+  constructor(
+    private readonly cartService: CartService,
+    private readonly userService: UserService,
+    private readonly productService: ProductService
+  ) {}
 
-  @Mutation(() => Cart)
+  // @Mutation(() => Cart)
   // createCart(@Args('createCartInput') createCartInput: CreateCartInput) {
   //   return this.cartService.create(createCartInput);
   // }
@@ -18,8 +24,16 @@ export class CartResolver {
   //   return this.cartService.findAll();
   // }
 
-  @Query(() => Cart, { name: 'cart' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+
+  // @ResolveField()
+  // async cart(@Parent() cart: Cart) {
+  //   const { id } = cart;
+  //   return this.userService.findOneWithCart(id);
+  // }
+  
+
+  @Query(() => Cart)
+  findCartWithUserId(@Args('id', { type: () => Int }) id: number) {
     return this.cartService.findOne(id);
   }
 
@@ -32,4 +46,22 @@ export class CartResolver {
   removeFromCart(@Args('id', { type: () => Int }) id: number) {
     return this.cartService.remove(id);
   }
+
+  @ResolveField()
+  async user(@Parent() cart: Cart) {
+    const { id } = cart;
+    const cartData = await this.cartService.findCartById(id);
+    const result = await this.userService.findOne(cartData.userId);
+    return result;
+  }
+
+  @ResolveField()
+  async products(@Parent() cart: Cart) {
+    const { id } = cart;
+    const cartData = await this.cartService.findCartById(id);
+    const result = await this.productService.findByCartId(cartData.userId);
+    // return this.productService.(id);
+    return result;
+  }
+
 }

@@ -8,9 +8,15 @@ import { UpdateCartInput } from './dto/update-cart.input';
 export class CartService {
   constructor(private prisma: PrismaService) {}
 
-  create(createCartInput: CreateCartInput) {
+  create(createCartInput: number) {
     return this.prisma.cart.create({
-      data: createCartInput
+      data: {
+        user: {
+          connect: {
+            id: createCartInput,
+          }
+        }
+      }
     });
   }
 
@@ -18,7 +24,7 @@ export class CartService {
   //   return this.prisma.cart.findMany();
   // }
 
-  findOne(id: number) {
+  findCartById(id: number) {
     return this.prisma.cart.findUnique({
       where: {
         id
@@ -26,12 +32,46 @@ export class CartService {
     });
   }
 
+  // findCartProductsById(id: number) {
+  //   return this.prisma.cart.findMany({
+  //     where: {
+  //       id
+  //     },
+  //     include: {
+  //       products: {
+  //         select:{
+  //           name: true,
+  //           price: true,
+  //           id: true,
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
+  
+
+
+  findOne(id: number) {
+    return this.prisma.cart.findUnique({
+      where: {
+        userId: id
+      }
+    });
+  }
+
+  //not tested yet
   update(updateCartInput: UpdateCartInput) {
     return this.prisma.cart.update({
       where: {
-        id: updateCartInput.id
+        userId: updateCartInput.userId
       },
-      data: updateCartInput
+      data: {
+        products: {
+          connect: {
+            id: updateCartInput.productId
+          }
+        }
+      }
     });
   }
 
