@@ -5,6 +5,8 @@ import { CreateCartInput } from './dto/create-cart.input';
 import { UpdateCartInput } from './dto/update-cart.input';
 import { UserService } from '../user/user.service';
 import { ProductService } from '../product/product.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Cart)
 export class CartResolver {
@@ -33,16 +35,19 @@ export class CartResolver {
   
 
   @Query(() => Cart)
+  @UseGuards(JwtAuthGuard)
   findCartWithUserId(@Args('id', { type: () => Int }) id: number) {
     return this.cartService.findOne(id);
   }
 
   @Mutation(() => Cart)
+  @UseGuards(JwtAuthGuard)
   updateCart(@Args('updateCartInput') updateCartInput: UpdateCartInput) {
     return this.cartService.update(updateCartInput);
   }
 
   @Mutation(() => Cart)
+  @UseGuards(JwtAuthGuard)
   removeFromCart(@Args('id', { type: () => Int }) id: number) {
     return this.cartService.remove(id);
   }

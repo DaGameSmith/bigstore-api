@@ -5,6 +5,8 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { ProductService } from '../product/product.service';
 import { CartService } from '../cart/cart.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(of => User)
 export class UserResolver {
@@ -23,16 +25,19 @@ export class UserResolver {
   }
 
   @Query(() => [User], { name: 'users' })
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.userService.findAll();
   }
 
   @Query(() => [User], { name: 'userswithproducts' })
+  @UseGuards(JwtAuthGuard)
   findAllWithProducts() {
     return this.userService.findAllWithProducts();
   }
 
   @Query(() => User, { name: 'user' })
+  @UseGuards(JwtAuthGuard)
   findOne(@Args('id', { type: () => Int }) id: number) {
     return this.userService.findOne(id);
   }
@@ -50,6 +55,7 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
+  @UseGuards(JwtAuthGuard)
   updateUserAddress(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     return this.userService.update(updateUserInput);
   }

@@ -35,6 +35,10 @@ type Order {
   product: Product!
 }
 
+type Auth {
+  access_token: String!
+}
+
 type Query {
   users: [User!]!
   userswithproducts: [User!]!
@@ -60,6 +64,7 @@ type Mutation {
   updateCart(updateCartInput: UpdateCartInput!): Cart!
   removeFromCart(id: Int!): Cart!
   createOrder(createOrderInput: CreateOrderInput!): Order!
+  login(loginAuthInput: LoginAuthInput!): Auth!
 }
 
 input CreateUserInput {
@@ -105,4 +110,9 @@ input UpdateCartInput {
 input CreateOrderInput {
   userId: Int!
   productId: Int!
+}
+
+input LoginAuthInput {
+  email: String!
+  password: String!
 }

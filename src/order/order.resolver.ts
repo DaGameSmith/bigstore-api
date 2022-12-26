@@ -5,6 +5,8 @@ import { CreateOrderInput } from './dto/create-order.input';
 import { UpdateOrderInput } from './dto/update-order.input';
 import { UserService } from '../user/user.service';
 import { ProductService } from '../product/product.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Order)
 export class OrderResolver {
@@ -15,16 +17,19 @@ export class OrderResolver {
   ) {}
 
   @Mutation(() => Order)
+  @UseGuards(JwtAuthGuard)
   createOrder(@Args('createOrderInput') createOrderInput: CreateOrderInput) {
     return this.orderService.create(createOrderInput);
   }
 
   @Query(() => [Order])
+  @UseGuards(JwtAuthGuard)
   findAllOrders() {
     return this.orderService.findAll();
   }
 
   @Query(() => [Order])
+  @UseGuards(JwtAuthGuard)
   findUserOrders(@Args('id', { type: () => Int }) id: number) {
     return this.orderService.findUserOrders(id);
   }
